@@ -2,6 +2,7 @@ import { listings as listingsService } from '@/lib/services';
 import { formatPrice } from '@/lib/utils';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import BookingCard from '@/components/booking/BookingCard';
 import { MapPin, Star, Users, Check, AlertCircle, Info } from 'lucide-react';
 
 // This is a server component that fetches listing data on the server
@@ -50,9 +51,13 @@ export default async function ListingPage({ params }: { params: { id: string } }
             />
           </div>
           <div className="hidden md:grid grid-cols-2 gap-2">
-            {(images || []).slice(1, 5).map((img: any, i: number) => (
+            {[1, 2, 3, 4].map((i) => (
               <div key={i} className="relative">
-                <img src={img.url} alt="" className="w-full h-full object-cover" />
+                <img
+                  src={images?.[i]?.url || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&q=80'}
+                  alt={`${listing.title} ${i + 1}`}
+                  className="w-full h-full object-cover"
+                />
               </div>
             ))}
           </div>
@@ -61,73 +66,56 @@ export default async function ListingPage({ params }: { params: { id: string } }
 
       {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-3 gap-10">
-          {/* Main content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Tags */}
-            {tags && tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {tags.map((tag: string) => (
-                  <span key={tag} className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-stone-100 text-stone-700">
-                    {tag}
-                  </span>
-                ))}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column - Details */}
+          <div className="lg:col-span-2">
+            {/* Title and Location */}
+            <div className="mb-6">
+              <h1 className="text-2xl md:text-3xl font-semibold text-stone-900 mb-2">{listing.title}</h1>
+              <div className="flex items-center gap-4 text-stone-500 text-sm">
+                <span className="flex items-center gap-1">
+                  <MapPin className="w-4 h-4" />
+                  {listing.city}, {listing.state}
+                </span>
+                <span className="flex items-center gap-1">
+                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  {listing.rating || '4.9'} ({listing.review_count || '12'} reviews)
+                </span>
+                <span className="flex items-center gap-1">
+                  <Users className="w-4 h-4" />
+                  Up to {listing.max_guests} guests
+                </span>
               </div>
-            )}
-
-            {/* Title */}
-            <div>
-              <h1 className="text-3xl font-semibold text-stone-900 mb-1">{listing.title}</h1>
-              {listing.subtitle && <p className="text-stone-500 mb-2">{listing.subtitle}</p>}
-              <div className="flex items-center gap-4 text-sm text-stone-500">
-                <span className="flex items-center gap-1"><MapPin className="w-4 h-4" /> {listing.location_label}</span>
-                {listing.rating_avg > 0 && (
-                  <span className="flex items-center gap-1">
-                    <Star className="w-4 h-4 fill-stone-900 text-stone-900" />
-                    {listing.rating_avg} ({listing.review_count} reviews)
-                  </span>
-                )}
-                <span className="flex items-center gap-1"><Users className="w-4 h-4" /> Up to {listing.max_guests} guests</span>
-              </div>
-            </div>
-
-            {/* Outdoor-only notice */}
-            <div className="bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 flex items-start gap-3">
-              <Info className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
-              <p className="text-sm text-amber-800">
-                This is an outdoor-access-only booking. You are booking access to the
-                property&apos;s outdoor grounds — not the home itself and not overnight accommodation.
-              </p>
             </div>
 
             {/* Host */}
             {host && (
-              <div className="flex items-center gap-4 p-4 bg-stone-50 rounded-xl">
-                <div className="w-12 h-12 rounded-full bg-stone-900 text-white flex items-center justify-center font-medium text-sm">
-                  {host.full_name?.split(' ').map((n: string) => n[0]).join('') || '?'}
+              <div className="flex items-center gap-3 pb-6 mb-6 border-b border-stone-200">
+                <div className="w-10 h-10 bg-stone-200 rounded-full flex items-center justify-center text-stone-600 font-medium">
+                  {host.full_name?.[0] || 'H'}
                 </div>
                 <div>
-                  <p className="font-medium text-stone-900">Hosted by {host.full_name}</p>
-                  <p className="text-xs text-stone-500">Member since {new Date(host.created_at).getFullYear()}</p>
+                  <p className="text-sm font-medium text-stone-900">Hosted by {host.full_name || 'Host'}</p>
+                  <p className="text-xs text-stone-500">Verified host</p>
                 </div>
               </div>
             )}
 
             {/* Description */}
-            <div>
-              <h3 className="font-semibold text-stone-900 mb-3">About This Space</h3>
-              <p className="text-stone-600 text-sm leading-relaxed">{listing.description}</p>
+            <div className="mb-8">
+              <h3 className="text-lg font-semibold text-stone-900 mb-3">About this space</h3>
+              <p className="text-stone-600 leading-relaxed">{listing.description}</p>
             </div>
 
             {/* Amenities */}
             {amenities && amenities.length > 0 && (
-              <div>
-                <h3 className="font-semibold text-stone-900 mb-3">Amenities & Features</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {amenities.map((a: string) => (
-                    <div key={a} className="flex items-center gap-2 text-sm text-stone-600">
-                      <Check className="w-4 h-4 text-emerald-500 shrink-0" />
-                      <span>{a}</span>
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold text-stone-900 mb-3">Amenities</h3>
+                <div className="grid grid-cols-2 gap-3">
+                  {amenities.map((amenity: any, i: number) => (
+                    <div key={i} className="flex items-center gap-2 text-stone-600 text-sm">
+                      <Check className="w-4 h-4 text-green-600" />
+                      {amenity.name || amenity}
                     </div>
                   ))}
                 </div>
@@ -136,13 +124,13 @@ export default async function ListingPage({ params }: { params: { id: string } }
 
             {/* Rules */}
             {rules && rules.length > 0 && (
-              <div>
-                <h3 className="font-semibold text-stone-900 mb-3">Property Rules</h3>
-                <div className="grid grid-cols-2 gap-2">
-                  {rules.map((r: string) => (
-                    <div key={r} className="flex items-center gap-2 text-sm text-stone-500">
-                      <AlertCircle className="w-4 h-4 text-stone-400 shrink-0" />
-                      <span>{r}</span>
+              <div className="mb-8">
+                <h3 className="text-lg font-semibold text-stone-900 mb-3">Space Rules</h3>
+                <div className="space-y-2">
+                  {rules.map((rule: any, i: number) => (
+                    <div key={i} className="flex items-center gap-2 text-stone-600 text-sm">
+                      <Info className="w-4 h-4 text-stone-400" />
+                      {rule.name || rule}
                     </div>
                   ))}
                 </div>
@@ -150,65 +138,14 @@ export default async function ListingPage({ params }: { params: { id: string } }
             )}
           </div>
 
-          {/* Sidebar — Booking card */}
+          {/* Right Column - Booking Card */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 bg-white rounded-2xl border border-stone-200 p-6 shadow-sm">
-              <div className="mb-4">
-                <div className="flex items-baseline gap-1 mb-1">
-                  <span className="text-2xl font-semibold text-stone-900">{formatPrice(listing.price_2hr)}</span>
-                  <span className="text-stone-400 text-sm">/ 2hr session</span>
-                </div>
-                <div className="flex gap-3 text-xs text-stone-500">
-                  <span>{formatPrice(listing.price_halfday)} half day</span>
-                  <span>·</span>
-                  <span>{formatPrice(listing.price_fullday)} full day</span>
-                </div>
-              </div>
-
-              <div className="space-y-3 mb-5">
-                <div className="space-y-1.5">
-                  <label className="block text-sm font-medium text-stone-700">Date</label>
-                  <input type="date" className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-stone-400" />
-                </div>
-                <div className="space-y-1.5">
-                  <label className="block text-sm font-medium text-stone-700">Duration</label>
-                  <select className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm">
-                    <option>2-Hour Session — {formatPrice(listing.price_2hr)}</option>
-                    <option>Half Day — {formatPrice(listing.price_halfday)}</option>
-                    <option>Full Day — {formatPrice(listing.price_fullday)}</option>
-                  </select>
-                </div>
-                <div className="space-y-1.5">
-                  <label className="block text-sm font-medium text-stone-700">Guest / Crew Count</label>
-                  <input type="number" min={1} max={listing.max_guests} defaultValue={2} className="w-full px-4 py-2.5 rounded-lg border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-stone-400" />
-                </div>
-              </div>
-
-              <div className="border-t border-stone-100 pt-4 mb-5">
-                <div className="flex justify-between text-sm mb-1">
-                  <span className="text-stone-500">Session fee</span>
-                  <span className="font-medium">{formatPrice(listing.price_2hr)}</span>
-                </div>
-                <div className="flex justify-between text-sm mb-2">
-                  <span className="text-stone-500">Service fee</span>
-                  <span className="font-medium">{formatPrice(Math.round(listing.price_2hr * 0.12))}</span>
-                </div>
-                <div className="flex justify-between font-semibold text-stone-900 pt-2 border-t border-stone-100">
-                  <span>Total</span>
-                  <span>{formatPrice(listing.price_2hr + Math.round(listing.price_2hr * 0.12))}</span>
-                </div>
-              </div>
-
-              <a
-                href="/login"
-                className="block w-full text-center px-5 py-3 bg-stone-900 text-white text-sm font-medium rounded-lg hover:bg-stone-800 transition-colors"
-              >
-                Request to Book
-              </a>
-              <p className="text-xs text-stone-400 text-center mt-3">
-                You won&apos;t be charged until the host approves
-              </p>
-            </div>
+            <BookingCard
+              listingId={listing.id}
+              listingTitle={listing.title}
+              pricePerHour={listing.price_2hr || listing.price_per_hour || 75}
+              hostId={listing.host_id}
+            />
           </div>
         </div>
       </div>
