@@ -1,23 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2026-02-25.clover',
 });
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { listingId, listingTitle, pricePerHour, hours, date, userId, hostId } = body;
+    const { listingId, listingTitle, totalAmount, hours, date, userId, hostId } = body;
 
-    if (!listingId || !listingTitle || !pricePerHour || !hours || !date) {
+    if (!listingId || !listingTitle || !totalAmount || !date) {
       return NextResponse.json(
         { error: 'Missing required booking details' },
         { status: 400 }
       );
     }
 
-    const totalAmount = Math.round(pricePerHour * hours * 100); // Stripe expects cents
+    const amountInCents = Math.round(totalAmount * 100);
 
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
               name: listingTitle,
               description: `${hours} hour${hours > 1 ? 's' : ''} on ${date}`,
             },
-            unit_amount: totalAmount,
+            unit_amount: amountInCents,
           },
           quantity: 1,
         },
@@ -42,8 +42,8 @@ export async function POST(request: NextRequest) {
         userId: userId || '',
         hostId: hostId || '',
         date,
-        hours: hours.toString(),
-        pricePerHour: pricePerHour.toString(),
+        hours: (hours || 1).toString(),
+        totalAmount: totalAmount.toString(),
       },
     });
 

@@ -15,9 +15,9 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const totalPrice = pricePerHour * hours;
-  const serviceFee = Math.round(totalPrice * 0.1 * 100) / 100; // 10% service fee
-  const grandTotal = totalPrice + serviceFee;
+  const subtotal = pricePerHour * hours;
+  const serviceFee = Math.round(subtotal * 0.12 * 100) / 100;
+  const grandTotal = subtotal + serviceFee;
 
   // Set minimum date to tomorrow
   const tomorrow = new Date();
@@ -40,8 +40,8 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
         body: JSON.stringify({
           listingId,
           listingTitle,
-          pricePerHour: grandTotal, // Send total as the charge
-          hours: 1, // We already calculated total, so quantity is 1
+          totalAmount: grandTotal,
+          hours,
           date,
           hostId: hostId || '',
         }),
@@ -100,7 +100,7 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
       <div className="border-t border-gray-200 pt-4 mb-4 space-y-2">
         <div className="flex justify-between text-gray-600">
           <span>${pricePerHour} x {hours} hour{hours > 1 ? 's' : ''}</span>
-          <span>${totalPrice.toFixed(2)}</span>
+          <span>${subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-gray-600">
           <span>Service fee</span>
@@ -136,7 +136,7 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
         )}
       </button>
 
-      <p className="text-center text-xs text-gray-500 mt-3">You won&apos;t be charged yet</p>
+      <p className="text-center text-xs text-gray-500 mt-3">You won&apos;t be charged until the host approves</p>
     </div>
   );
 }
