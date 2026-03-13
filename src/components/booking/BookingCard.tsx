@@ -5,7 +5,7 @@ import { useState } from 'react';
 interface BookingCardProps {
   listingId: string;
   listingTitle: string;
-  pricePerHour: number;
+  pricePerHour: number; // This comes in as cents from the database
   hostId?: string;
 }
 
@@ -15,7 +15,9 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const subtotal = pricePerHour * hours;
+  // Convert cents to dollars for display
+  const priceInDollars = pricePerHour / 100;
+  const subtotal = priceInDollars * hours;
   const serviceFee = Math.round(subtotal * 0.12 * 100) / 100;
   const grandTotal = subtotal + serviceFee;
 
@@ -64,7 +66,7 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
   return (
     <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sticky top-24">
       <div className="flex items-baseline gap-1 mb-6">
-        <span className="text-2xl font-bold text-gray-900">${pricePerHour}</span>
+        <span className="text-2xl font-bold text-gray-900">${priceInDollars}</span>
         <span className="text-gray-500">/ hour</span>
       </div>
 
@@ -99,7 +101,7 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
       {/* Price Breakdown */}
       <div className="border-t border-gray-200 pt-4 mb-4 space-y-2">
         <div className="flex justify-between text-gray-600">
-          <span>${pricePerHour} x {hours} hour{hours > 1 ? 's' : ''}</span>
+          <span>${priceInDollars} x {hours} hour{hours > 1 ? 's' : ''}</span>
           <span>${subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-gray-600">

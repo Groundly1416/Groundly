@@ -8,7 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 
 /** Convert cents to display string like "$350" */
 export function formatPrice(cents: number): string {
-  return `$${(cents).toLocaleString('en-US', {
+  return `$${(cents / 100).toLocaleString('en-US', {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   })}`;
