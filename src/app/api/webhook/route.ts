@@ -1,16 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '', {
   apiVersion: '2026-02-25.clover',
 });
-
-// Use service role key for webhook (server-side, no user auth)
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 export async function POST(request: NextRequest) {
   const body = await request.text();
@@ -26,7 +19,7 @@ export async function POST(request: NextRequest) {
     event = stripe.webhooks.constructEvent(
       body,
       signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
+      process.env.STRIPE_WEBHOOK_SECRET || ''
     );
   } catch (err: any) {
     console.error('Webhook signature verification failed:', err.message);
@@ -42,24 +35,34 @@ export async function POST(request: NextRequest) {
 
     if (metadata) {
       try {
-        // Save booking to Supabase
-        const { error } = await supabase.from('bookings').insert({
-          listing_id: metadata.listingId,
-          user_id: metadata.userId || null,
-          host_id: metadata.hostId || null,
-          booking_date: metadata.date,
-          hours: parseInt(metadata.hours || '1'),
-          total_amount: (session.amount_total || 0) / 100,
-          stripe_session_id: session.id,
-          stripe_payment_intent: session.payment_intent as string,
-          status: 'confirmed',
-          created_at: new Date().toISOString(),
-        });
+        // Only save to Supabase if service role key is available
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
-        if (error) {
-          console.error('Error saving booking:', error);
+        if (supabaseUrl && supabaseServiceKey) {
+          const { createClient } = await import('@supabase/supabase-js');
+          const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+          const { error } = await supabase.from('bookings').insert({
+            listing_id: metadata.listingId,
+            user_id: metadata.userId || null,
+            host_id: metadata.hostId || null,
+            booking_date: metadata.date,
+            hours: parseInt(metadata.hours || '1'),
+            total_amount: (session.amount_total || 0) / 100,
+            stripe_session_id: session.id,
+            stripe_payment_intent: session.payment_intent as string,
+            status: 'confirmed',
+            created_at: new Date().toISOString(),
+          });
+
+          if (error) {
+            console.error('Error saving booking:', error);
+          } else {
+            console.log('Booking saved successfully for session:', session.id);
+          }
         } else {
-          console.log('Booking saved successfully for session:', session.id);
+          console.log('Supabase service key not configured, skipping DB save');
         }
       } catch (err) {
         console.error('Error processing webhook:', err);
