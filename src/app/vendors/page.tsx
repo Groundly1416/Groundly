@@ -1,15 +1,22 @@
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { vendors as vendorService } from '@/lib/services';
-import { MapPin, Star } from 'lucide-react';
+import { MapPin, ExternalLink, Mail, Phone } from 'lucide-react';
 
 const EMOJI_MAP: Record<string, string> = {
-  Photographer: '📷', Florist: '💐', Planner: '📋', Catering: '🍽️', Rentals: '🪑',
+  Photographer: '📷',
+  Florist: '💐',
+  Planner: '📋',
+  Catering: '🍽️',
+  Rentals: '🪑',
+  'Wedding & Event Planning': '✨',
 };
 
 export default async function VendorsPage() {
   let vendorList: any[] = [];
-  try { vendorList = await vendorService.getAll(); } catch {}
+  try {
+    vendorList = await vendorService.getAll();
+  } catch {}
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -19,35 +26,83 @@ export default async function VendorsPage() {
           <h1 className="text-2xl font-semibold text-stone-900 mb-1">Recommended Vendors</h1>
           <p className="text-stone-500 text-sm">Curated local professionals to complement your shoot</p>
         </div>
+
         {vendorList.length > 0 ? (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-            {vendorList.map((v: any) => (
-              <div key={v.id} className="bg-white rounded-xl border border-stone-100 p-5">
-                <div className="flex items-center gap-4 mb-3">
-                  <div className="w-14 h-14 rounded-xl bg-stone-100 flex items-center justify-center text-2xl">
-                    {EMOJI_MAP[v.type] || '🏢'}
+            {vendorList.map((v: any) => {
+              const specialties = v.specialty
+                ? v.specialty.split(',').map((s: string) => s.trim()).slice(0, 3)
+                : [];
+
+              return (
+                <div key={v.id} className="bg-white rounded-xl border border-stone-100 hover:border-stone-200 hover:shadow-md transition-all p-6 flex flex-col">
+                  {/* Header */}
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-stone-100 flex items-center justify-center text-2xl shrink-0">
+                      {EMOJI_MAP[v.type] || '🏢'}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-stone-900">{v.name}</h3>
+                      <p className="text-xs text-stone-500">{v.type}</p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="font-medium text-stone-900">{v.name}</h3>
-                    <p className="text-xs text-stone-500">{v.type}</p>
-                  </div>
-                </div>
-                <p className="text-sm text-stone-600 mb-3">{v.description}</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3 text-xs text-stone-500">
-                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {v.location}</span>
-                    {v.rating && <span className="flex items-center gap-1"><Star className="w-3 h-3 fill-amber-400 text-amber-400" /> {v.rating}</span>}
-                  </div>
-                  {v.specialty && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-stone-100 text-stone-700">{v.specialty}</span>
+
+                  {/* Description - truncated to 2 lines */}
+                  <p className="text-sm text-stone-600 mb-4 line-clamp-2">{v.description}</p>
+
+                  {/* Specialty Tags - max 3 */}
+                  {specialties.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {specialties.map((tag: string) => (
+                        <span key={tag} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-600">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
                   )}
+
+                  {/* Location */}
+                  <div className="flex items-center gap-1.5 text-sm text-stone-500 mb-4">
+                    <MapPin className="w-4 h-4 shrink-0" />
+                    <span className="truncate">{v.location}</span>
+                  </div>
+
+                  {/* Spacer to push buttons to bottom */}
+                  <div className="mt-auto pt-4 border-t border-stone-100 flex items-center gap-2">
+                    {v.website && (
+                      
+                        href={v.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-sm font-medium text-stone-700 hover:text-stone-900 transition-colors"
+                      >
+                        <ExternalLink className="w-4 h-4" /> Website
+                      </a>
+                    )}
+                    {v.email && (
+                      
+                        href={`mailto:${v.email}`}
+                        className="flex items-center gap-1.5 text-sm font-medium text-stone-700 hover:text-stone-900 transition-colors ml-4"
+                      >
+                        <Mail className="w-4 h-4" /> Email
+                      </a>
+                    )}
+                    {v.phone && (
+                      
+                        href={`tel:${v.phone}`}
+                        className="flex items-center gap-1.5 text-sm font-medium text-stone-700 hover:text-stone-900 transition-colors ml-4"
+                      >
+                        <Phone className="w-4 h-4" /> Call
+                      </a>
+                    )}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         ) : (
           <div className="text-center py-20 border border-dashed border-stone-200 rounded-2xl">
-            <p className="text-stone-400 text-sm">Connect Supabase and run seed data to see vendors here</p>
+            <p className="text-stone-400 text-sm">No vendors available yet</p>
           </div>
         )}
       </main>
