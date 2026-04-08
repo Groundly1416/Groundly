@@ -270,6 +270,12 @@ export const vendors = {
     const { data } = await supabase.from('vendors').select('*').eq('is_active', true).order('sort_order');
     return data || [];
   },
+
+  async getById(id: string): Promise<Vendor | null> {
+    const { data, error } = await supabase.from('vendors').select('*').eq('id', id).single();
+    if (error) return null;
+    return data;
+  },
 };
 
 // ---- HOST ----
