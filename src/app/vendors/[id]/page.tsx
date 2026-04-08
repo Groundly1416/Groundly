@@ -91,7 +91,7 @@ export default async function VendorProfilePage({ params }: { params: { id: stri
               )}
               {vendor.instagram && (
                 <a href={'https://instagram.com/' + vendor.instagram.replace('@', '')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-stone-700 hover:text-stone-900 transition-colors">
-                  <span className="text-lg">📸</span>
+                  <span className="text-sm font-medium">Instagram</span>
                   <span>{vendor.instagram}</span>
                 </a>
               )}
