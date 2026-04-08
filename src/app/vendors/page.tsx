@@ -1,103 +1,90 @@
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { vendors as vendorService } from '@/lib/services';
-import { MapPin, ExternalLink, Mail, Phone, ArrowLeft } from 'lucide-react';
+import { MapPin, ExternalLink, Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
 
-export default async function VendorProfilePage({ params }: { params: { id: string } }) {
-  let vendor: any = null;
+const EMOJI_MAP: Record<string, string> = {
+  Photographer: '📷',
+  Florist: '💐',
+  Planner: '📋',
+  Catering: '🍽️',
+  Rentals: '🪑',
+  'Wedding & Event Planning': '✨',
+};
+
+export default async function VendorsPage() {
+  let vendorList: any[] = [];
   try {
-    vendor = await vendorService.getById(params.id);
+    vendorList = await vendorService.getAll();
   } catch {}
-
-  if (!vendor) {
-    return (
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-2xl font-semibold text-stone-900 mb-2">Vendor not found</h1>
-            <Link href="/vendors" className="text-sm text-stone-500 hover:text-stone-900 underline">Back to vendors</Link>
-          </div>
-        </main>
-        <Footer />
-      </div>
-    );
-  }
-
-  const specialties = vendor.specialty ? vendor.specialty.split(',').map((s: string) => s.trim()) : [];
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        <Link href="/vendors" className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900 transition-colors mb-8">
-          <ArrowLeft className="w-4 h-4" /> Back to vendors
-        </Link>
-
-        <div className="bg-white rounded-2xl border border-stone-100 p-8">
-          <div className="flex items-center gap-5 mb-6">
-            <div className="w-20 h-20 rounded-2xl bg-stone-100 flex items-center justify-center text-4xl shrink-0 overflow-hidden">
-              {vendor.image_url ? (
-                <img src={vendor.image_url} alt={vendor.name} className="w-full h-full object-contain p-1" />
-              ) : (
-                '✨'
-              )}
-            </div>
-            <div>
-              <h1 className="text-2xl font-semibold text-stone-900">{vendor.name}</h1>
-              <p className="text-stone-500">{vendor.type}</p>
-            </div>
-          </div>
-
-          <div className="flex items-center gap-2 text-stone-500 mb-6">
-            <MapPin className="w-5 h-5 shrink-0" />
-            <span>{vendor.location}</span>
-          </div>
-
-          {specialties.length > 0 && (
-            <div className="flex flex-wrap gap-2 mb-6">
-              {specialties.map((tag: string) => (
-                <span key={tag} className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-stone-100 text-stone-600">{tag}</span>
-              ))}
-            </div>
-          )}
-
-          <div className="border-t border-stone-100 pt-6 mb-6">
-            <h2 className="text-lg font-semibold text-stone-900 mb-3">About</h2>
-            <p className="text-stone-600 leading-relaxed">{vendor.description}</p>
-          </div>
-
-          <div className="border-t border-stone-100 pt-6">
-            <h2 className="text-lg font-semibold text-stone-900 mb-4">Get in Touch</h2>
-            <div className="flex flex-col gap-3">
-              {vendor.website && (
-                <a href={vendor.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-stone-700 hover:text-stone-900 transition-colors">
-                  <ExternalLink className="w-5 h-5" />
-                  <span>{vendor.website.replace('https://', '')}</span>
-                </a>
-              )}
-              {vendor.email && (
-                <a href={'mailto:' + vendor.email} className="flex items-center gap-3 text-stone-700 hover:text-stone-900 transition-colors">
-                  <Mail className="w-5 h-5" />
-                  <span>{vendor.email}</span>
-                </a>
-              )}
-              {vendor.phone && (
-                <a href={'tel:' + vendor.phone} className="flex items-center gap-3 text-stone-700 hover:text-stone-900 transition-colors">
-                  <Phone className="w-5 h-5" />
-                  <span>{vendor.phone}</span>
-                </a>
-              )}
-              {vendor.instagram && (
-                <a href={'https://instagram.com/' + vendor.instagram.replace('@', '')} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-stone-700 hover:text-stone-900 transition-colors">
-                  <span className="text-lg">📸</span>
-                  <span>{vendor.instagram}</span>
-                </a>
-              )}
-            </div>
-          </div>
+      <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
+        <div className="mb-8">
+          <h1 className="text-2xl font-semibold text-stone-900 mb-1">Recommended Vendors</h1>
+          <p className="text-stone-500 text-sm">Curated local professionals to complement your shoot</p>
         </div>
+
+        {vendorList.length > 0 ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {vendorList.map((v: any) => {
+              const specialties = v.specialty ? v.specialty.split(',').map((s: string) => s.trim()).slice(0, 3) : [];
+              return (
+                <Link href={'/vendors/' + v.id} key={v.id} className="bg-white rounded-xl border border-stone-100 hover:border-stone-200 hover:shadow-md transition-all p-6 flex flex-col">
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-14 h-14 rounded-xl bg-stone-100 flex items-center justify-center text-2xl shrink-0 overflow-hidden">
+                      {v.image_url ? (
+                        <img src={v.image_url} alt={v.name} className="w-full h-full object-contain p-1" />
+                      ) : (
+                        EMOJI_MAP[v.type] || '🏢'
+                      )}
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-stone-900">{v.name}</h3>
+                      <p className="text-xs text-stone-500">{v.type}</p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-stone-600 mb-4 overflow-hidden" style={{display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical'}}>{v.description}</p>
+                  {specialties.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mb-4">
+                      {specialties.map((tag: string) => (
+                        <span key={tag} className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-stone-100 text-stone-600">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                  <div className="flex items-center gap-1.5 text-sm text-stone-500 mb-4">
+                    <MapPin className="w-4 h-4 shrink-0" />
+                    <span>{v.location}</span>
+                  </div>
+                  <div className="mt-auto pt-4 border-t border-stone-100 flex items-center gap-4">
+                    {v.website && (
+                      <span className="flex items-center gap-1.5 text-sm font-medium text-stone-700">
+                        <ExternalLink className="w-4 h-4" /> Website
+                      </span>
+                    )}
+                    {v.email && (
+                      <span className="flex items-center gap-1.5 text-sm font-medium text-stone-700">
+                        <Mail className="w-4 h-4" /> Email
+                      </span>
+                    )}
+                    {v.phone && (
+                      <span className="flex items-center gap-1.5 text-sm font-medium text-stone-700">
+                        <Phone className="w-4 h-4" /> Call
+                      </span>
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-20 border border-dashed border-stone-200 rounded-2xl">
+            <p className="text-stone-400 text-sm">No vendors available yet</p>
+          </div>
+        )}
       </main>
       <Footer />
     </div>
