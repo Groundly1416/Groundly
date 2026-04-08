@@ -35,9 +35,9 @@ export default async function VendorsPage() {
               return (
                 <Link href={'/vendors/' + v.id} key={v.id} className="bg-white rounded-xl border border-stone-100 hover:border-stone-200 hover:shadow-md transition-all p-6 flex flex-col">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-14 h-14 rounded-xl bg-stone-100 flex items-center justify-center text-2xl shrink-0 overflow-hidden">
+                    <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl shrink-0 overflow-hidden">
                       {v.image_url ? (
-                        <img src={v.image_url} alt={v.name} className="w-full h-full object-contain p-1" />
+                        <img src={v.image_url} alt={v.name} className="w-full h-full object-contain" />
                       ) : (
                         EMOJI_MAP[v.type] || '🏢'
                       )}

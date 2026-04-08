@@ -37,9 +37,9 @@ export default async function VendorProfilePage({ params }: { params: { id: stri
 
         <div className="bg-white rounded-2xl border border-stone-100 p-8">
           <div className="flex items-center gap-5 mb-6">
-            <div className="w-20 h-20 rounded-2xl bg-stone-100 flex items-center justify-center text-4xl shrink-0 overflow-hidden">
+            <div className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl shrink-0 overflow-hidden">
               {vendor.image_url ? (
-                <img src={vendor.image_url} alt={vendor.name} className="w-full h-full object-contain p-1" />
+                <img src={vendor.image_url} alt={vendor.name} className="w-full h-full object-contain" />
               ) : (
                 '✨'
               )}
