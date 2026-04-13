@@ -28,7 +28,6 @@ export default function Footer() {
             <h4 className="text-white font-medium text-sm mb-3">Hosting</h4>
             <div className="space-y-2">
               <Link href="/host" className="block text-sm hover:text-white transition-colors">List Your Space</Link>
-              <Link href="/faq" className="block text-sm hover:text-white transition-colors">Host FAQ</Link>
             </div>
           </div>
           <div>
