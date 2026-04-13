@@ -21,7 +21,7 @@ export default function SignupPage() {
     setError('');
     try {
       await auth.signUp(email, password, name, role);
-      window.location.href = '/';
+      window.location.href = role === 'host' ? '/dashboard' : '/';
     } catch (err: any) {
       setError(err.message || 'Signup failed');
     } finally {

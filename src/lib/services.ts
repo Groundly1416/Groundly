@@ -138,6 +138,39 @@ export const listings = {
       .neq('id', listingId).limit(limit);
     return data || [];
   },
+
+  async setAmenities(listingId: string, amenityIds: string[]) {
+    // Remove existing amenities for this listing
+    await supabase.from('listing_amenities').delete().eq('listing_id', listingId);
+    if (amenityIds.length === 0) return;
+    const rows = amenityIds.map(amenity_id => ({ listing_id: listingId, amenity_id }));
+    const { error } = await supabase.from('listing_amenities').insert(rows);
+    if (error) throw error;
+  },
+
+  async setRules(listingId: string, rules: string[]) {
+    // Remove existing rules for this listing
+    await supabase.from('listing_rules').delete().eq('listing_id', listingId);
+    if (rules.length === 0) return;
+    const rows = rules.map((rule_text, i) => ({ listing_id: listingId, rule_text, sort_order: i }));
+    const { error } = await supabase.from('listing_rules').insert(rows);
+    if (error) throw error;
+  },
+
+  async deleteImage(imageId: string) {
+    const { error } = await supabase.from('listing_images').delete().eq('id', imageId);
+    if (error) throw error;
+  },
+
+  async getRules(listingId: string) {
+    const { data } = await supabase.from('listing_rules').select('*').eq('listing_id', listingId).order('sort_order');
+    return data || [];
+  },
+
+  async getListingAmenityIds(listingId: string): Promise<string[]> {
+    const { data } = await supabase.from('listing_amenities').select('amenity_id').eq('listing_id', listingId);
+    return (data || []).map(r => r.amenity_id);
+  },
 };
 
 // ---- BOOKINGS ----
