@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Leaf, Menu, X, LayoutDashboard, LogOut } from 'lucide-react';
+import { Leaf, Menu, X, LayoutDashboard, Calendar, LogOut } from 'lucide-react';
 import { auth } from '@/lib/services';
 import { cn } from '@/lib/utils';
 import type { Profile } from '@/types/database';
@@ -29,6 +29,7 @@ export default function Navbar() {
   };
 
   const isHost = user?.role === 'host' || user?.role === 'admin';
+  const isGuest = user?.role === 'guest';
 
   return (
     <nav className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-stone-100">
@@ -54,6 +55,11 @@ export default function Navbar() {
               <Link href="/dashboard" className="px-4 py-2 text-sm text-stone-500 hover:text-stone-900 rounded-lg transition-colors flex items-center gap-1.5">
                 <LayoutDashboard className="w-3.5 h-3.5" />
                 Dashboard
+              </Link>
+            ) : isGuest ? (
+              <Link href="/dashboard/guest" className="px-4 py-2 text-sm text-stone-500 hover:text-stone-900 rounded-lg transition-colors flex items-center gap-1.5">
+                <Calendar className="w-3.5 h-3.5" />
+                My Bookings
               </Link>
             ) : (
               <Link href="/host" className="px-4 py-2 text-sm text-stone-500 hover:text-stone-900 rounded-lg transition-colors">
@@ -114,6 +120,11 @@ export default function Navbar() {
             <Link href="/dashboard" className="flex items-center gap-1.5 px-3 py-2 text-sm text-stone-600 rounded-lg hover:bg-stone-50" onClick={() => setMenuOpen(false)}>
               <LayoutDashboard className="w-3.5 h-3.5" />
               Dashboard
+            </Link>
+          ) : isGuest ? (
+            <Link href="/dashboard/guest" className="flex items-center gap-1.5 px-3 py-2 text-sm text-stone-600 rounded-lg hover:bg-stone-50" onClick={() => setMenuOpen(false)}>
+              <Calendar className="w-3.5 h-3.5" />
+              My Bookings
             </Link>
           ) : (
             <Link href="/host" className="block px-3 py-2 text-sm text-stone-600 rounded-lg hover:bg-stone-50" onClick={() => setMenuOpen(false)}>List Your Space</Link>
