@@ -1,10 +1,12 @@
-export const dynamic = 'force-dynamic';
-
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { vendors as vendorService } from '@/lib/services';
 import { MapPin, ExternalLink, Mail, Phone, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
+
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 export default async function VendorProfilePage({ params }: { params: { id: string } }) {
   let vendor: any = null;
