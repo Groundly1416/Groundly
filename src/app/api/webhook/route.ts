@@ -35,7 +35,6 @@ export async function POST(request: NextRequest) {
 
     if (metadata) {
       try {
-        // Only save to Supabase if service role key is available
         const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
         const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
@@ -67,6 +66,35 @@ export async function POST(request: NextRequest) {
       } catch (err) {
         console.error('Error processing webhook:', err);
       }
+    }
+  }
+
+  if (event.type === 'account.updated') {
+    const account = event.data.object as Stripe.Account;
+    try {
+      const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+      if (supabaseUrl && supabaseServiceKey) {
+        const { createClient } = await import('@supabase/supabase-js');
+        const supabase = createClient(supabaseUrl, supabaseServiceKey);
+
+        const { error } = await supabase
+          .from('profiles')
+          .update({
+            stripe_charges_enabled: account.charges_enabled,
+            stripe_payouts_enabled: account.payouts_enabled,
+          })
+          .eq('stripe_account_id', account.id);
+
+        if (error) {
+          console.error('Error updating Connect status:', error);
+        } else {
+          console.log('Connect status updated for account:', account.id);
+        }
+      }
+    } catch (err) {
+      console.error('Error processing account.updated webhook:', err);
     }
   }
 

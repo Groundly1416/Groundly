@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LayoutDashboard, Plus, Calendar, ArrowLeft } from 'lucide-react';
+import { LayoutDashboard, Plus, Calendar, ArrowLeft, Banknote } from 'lucide-react';
 import { auth } from '@/lib/services';
 import { cn } from '@/lib/utils';
 import type { Profile } from '@/types/database';
@@ -14,6 +14,7 @@ const sidebarLinks = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { href: '/dashboard/create', label: 'Create Listing', icon: Plus },
   { href: '/dashboard/bookings', label: 'Bookings', icon: Calendar },
+  { href: '/dashboard/payouts', label: 'Payouts', icon: Banknote },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -73,6 +74,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   >
                     <Icon className="w-4 h-4" />
                     {link.label}
+                    {link.href === '/dashboard/payouts' && user && !user.stripe_payouts_enabled && (
+                      <span className="ml-auto w-2 h-2 rounded-full bg-amber-400 shrink-0" />
+                    )}
                   </Link>
                 );
               })}
@@ -91,12 +95,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'flex flex-col items-center gap-0.5 px-3 py-1 text-xs rounded-lg transition-colors',
+                    'relative flex flex-col items-center gap-0.5 px-3 py-1 text-xs rounded-lg transition-colors',
                     active ? 'text-stone-900 font-medium' : 'text-stone-400'
                   )}
                 >
                   <Icon className="w-5 h-5" />
                   {link.label}
+                  {link.href === '/dashboard/payouts' && user && !user.stripe_payouts_enabled && (
+                    <span className="absolute top-0 right-1 w-2 h-2 rounded-full bg-amber-400" />
+                  )}
                 </Link>
               );
             })}

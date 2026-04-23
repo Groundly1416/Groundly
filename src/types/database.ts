@@ -31,6 +31,8 @@ export interface Profile {
   is_verified: boolean;
   stripe_customer_id: string | null;
   stripe_account_id: string | null;
+  stripe_charges_enabled: boolean;
+  stripe_payouts_enabled: boolean;
   created_at: string;
   updated_at: string;
 }
