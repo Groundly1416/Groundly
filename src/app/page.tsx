@@ -50,8 +50,8 @@ export default async function HomePage() {
             Curated Outdoor Locations<br />For Photographers
           </h1>
           <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">
-            Private outdoor spaces — gardens, estates, waterfront, and meadows.
-            Bookable by the hour. Built for the photographers who shoot in them.
+            Private gardens, estates, waterfront, and meadows. Bookable by the
+            hour, built for photographers.
           </p>
           <HeroSearch />
         </div>
