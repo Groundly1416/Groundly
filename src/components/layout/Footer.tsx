@@ -21,7 +21,7 @@ export default function Footer() {
             <h4 className="text-white font-medium text-sm mb-3">Discover</h4>
             <div className="space-y-2">
               <Link href="/browse" className="block text-sm hover:text-white transition-colors">Browse Spaces</Link>
-              <Link href="/vendors" className="block text-sm hover:text-white transition-colors">Find Vendors</Link>
+              <Link href="/vendors" className="block text-sm hover:text-white transition-colors">Creative Network</Link>
             </div>
           </div>
           <div>

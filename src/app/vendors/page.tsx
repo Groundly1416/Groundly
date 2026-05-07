@@ -1,8 +1,13 @@
+import type { Metadata } from 'next';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { vendors as vendorService } from '@/lib/services';
 import { MapPin, ExternalLink, Mail, Phone } from 'lucide-react';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: 'Creative Network',
+};
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -28,8 +33,8 @@ export default async function VendorsPage() {
       <Navbar />
       <main className="flex-1 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full">
         <div className="mb-8">
-          <h1 className="text-2xl font-semibold text-stone-900 mb-1">Recommended Vendors</h1>
-          <p className="text-stone-500 text-sm">Curated local professionals to complement your shoot</p>
+          <h1 className="text-2xl font-semibold text-stone-900 mb-1">Creative Network</h1>
+          <p className="text-stone-500 text-sm">The creative network around our locations. Photographers, planners, florists, and stylists working alongside our spaces.</p>
         </div>
 
         {vendorList.length > 0 ? (
