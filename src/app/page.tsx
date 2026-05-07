@@ -137,15 +137,15 @@ export default async function HomePage() {
               </h2>
               <p className="text-stone-300 mb-6 leading-relaxed">
                 Your garden, lawn, or estate could be the perfect backdrop for someone's
-                next photoshoot. List your outdoor space on Groundly and earn money
-                while sharing its beauty.
+                next photoshoot. Photographers bring everything they need and treat your
+                space like the professionals they are — no setup, no cleanup, no events.
               </p>
               <div className="space-y-3 mb-8">
                 {[
-                  'You control who books',
-                  'Outdoor access only — no overnight stays',
-                  'Set your own pricing and rules',
-                  'Simple, secure booking process',
+                  'You approve every booking before it confirms',
+                  'Outdoor only — no events, no overnight stays',
+                  'Set your own hourly rate and available hours',
+                  'We handle payments, communication, and logistics',
                 ].map(item => (
                   <div key={item} className="flex items-center gap-3">
                     <Check className="w-4 h-4 text-emerald-400 shrink-0" />
