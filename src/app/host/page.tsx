@@ -14,7 +14,7 @@ export default function HostPage() {
         </div>
         <div className="relative z-10 max-w-2xl mx-auto px-4 text-center">
           <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-4 leading-tight">Your outdoor space<br />deserves to be shared</h1>
-          <p className="text-white/70 text-lg mb-8">Earn money by listing your garden, lawn, or estate on Groundly. Photographers book private outdoor spaces by the hour — yours could be next.</p>
+          <p className="text-white/70 text-lg mb-8">Earn money by listing your garden, lawn, or estate on Groundly.<br />Photographers book private outdoor spaces by the hour — yours could be next.</p>
           <a href="mailto:bookgroundly@gmail.com?subject=I%20want%20to%20list%20my%20space%20on%20Groundly" className="inline-flex items-center gap-2 bg-white text-stone-900 hover:bg-stone-100 px-8 py-4 rounded-lg font-medium transition-colors text-base">
             Start Hosting <ArrowRight className="w-4 h-4" />
           </a>
