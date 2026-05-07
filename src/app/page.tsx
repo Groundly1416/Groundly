@@ -47,7 +47,7 @@ export default async function HomePage() {
             Private Outdoor Spaces
           </p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-4 leading-tight tracking-tight">
-            Curated outdoor locations for photographers
+            Curated Outdoor Locations<br />For Photographers
           </h1>
           <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">
             Private outdoor spaces — gardens, estates, waterfront, and meadows.
