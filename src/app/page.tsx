@@ -6,18 +6,6 @@ import PropertyCard from '@/components/listings/PropertyCard';
 import HeroSearch from '@/components/layout/HeroSearch';
 import { Camera, Calendar, Search, Shield, Lock, Users, Check, ArrowRight, ChevronRight, Star, MapPin } from 'lucide-react';
 
-// Categories displayed on homepage
-const CATEGORIES = [
-  { id: 'gardens',     label: 'Gardens',         icon: '🌿', description: 'Lush private gardens' },
-  { id: 'waterfronts', label: 'Waterfronts',     icon: '🌊', description: 'Waterfront lawns & docks' },
-  { id: 'modern',      label: 'Modern Homes',    icon: '🏡', description: 'Contemporary outdoor spaces' },
-  { id: 'historic',    label: 'Historic Estates', icon: '🏛️', description: 'Grand estate grounds' },
-  { id: 'courtyards',  label: 'Courtyards',      icon: '⛲', description: 'Stone & brick courtyards' },
-  { id: 'lawns',       label: 'Large Lawns',     icon: '🌳', description: 'Open expansive lawns' },
-  { id: 'meadows',     label: 'Meadows',         icon: '🌾', description: 'Natural meadow settings' },
-  { id: 'terraces',    label: 'Terraces',        icon: '🏔️', description: 'Elevated terrace views' },
-];
-
 export default async function HomePage() {
   // Fetch featured listings from Supabase
   // If Supabase isn't connected yet, this gracefully returns []
@@ -53,25 +41,6 @@ export default async function HomePage() {
             Private gardens, estates, waterfront, and meadows.<br />Bookable by the hour, built for photographers.
           </p>
           <HeroSearch />
-        </div>
-      </section>
-
-      {/* ---- CATEGORIES ---- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h2 className="text-2xl font-semibold text-stone-900 mb-2">Browse by Category</h2>
-        <p className="text-stone-500 mb-8">Find the perfect outdoor setting for your creative vision</p>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {CATEGORIES.map(cat => (
-            <Link
-              key={cat.id}
-              href={`/browse?category=${cat.id}`}
-              className="group p-5 rounded-xl border border-stone-100 hover:border-stone-200 hover:shadow-md transition-all text-left"
-            >
-              <span className="text-2xl mb-2 block">{cat.icon}</span>
-              <h3 className="font-medium text-stone-900 text-sm">{cat.label}</h3>
-              <p className="text-xs text-stone-400 mt-0.5">{cat.description}</p>
-            </Link>
-          ))}
         </div>
       </section>
 
