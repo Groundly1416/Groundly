@@ -80,7 +80,7 @@ export default async function HomePage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl font-semibold text-stone-900 mb-1">Featured Properties</h2>
-            <p className="text-stone-500 text-sm">Hand-picked outdoor spaces loved by photographers and creators</p>
+            <p className="text-stone-500 text-sm">Hand-picked outdoor spaces. Curated by photographers, for photographers.</p>
           </div>
           <Link href="/browse" className="flex items-center gap-1 text-sm text-stone-500 hover:text-stone-900 transition-colors">
             View All <ChevronRight className="w-4 h-4" />
@@ -106,13 +106,13 @@ export default async function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-2xl font-semibold text-stone-900 mb-2">How Groundly Works</h2>
-            <p className="text-stone-500">Book your perfect outdoor space in three simple steps</p>
+            <p className="text-stone-500">Book your shoot location in three simple steps</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
             {[
               { icon: Search, title: 'Discover', desc: 'Browse curated private outdoor spaces filtered by location, style, and budget.' },
               { icon: Calendar, title: 'Request', desc: 'Choose your date, duration, and send a booking request to the host.' },
-              { icon: Camera, title: 'Create', desc: 'Show up and bring your creative vision to life in a stunning private setting.' },
+              { icon: Camera, title: 'Shoot', desc: 'Show up and shoot. We handle the logistics so you can focus on the work.' },
             ].map(step => (
               <div key={step.title} className="text-center">
                 <div className="w-14 h-14 rounded-2xl bg-stone-900 text-white flex items-center justify-center mx-auto mb-4">
