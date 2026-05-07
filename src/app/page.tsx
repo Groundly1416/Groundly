@@ -47,11 +47,11 @@ export default async function HomePage() {
             Private Outdoor Spaces
           </p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-4 leading-tight tracking-tight">
-            Beautiful grounds for<br />your next creative shoot
+            Curated outdoor locations for photographers
           </h1>
           <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">
-            Discover and book premium private estates, gardens, and outdoor spaces
-            for photography and creative productions.
+            Private outdoor spaces — gardens, estates, waterfront, and meadows.
+            Bookable by the hour. Built for the photographers who shoot in them.
           </p>
           <HeroSearch />
         </div>
