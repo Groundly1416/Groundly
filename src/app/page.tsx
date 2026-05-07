@@ -45,7 +45,7 @@ export default async function HomePage() {
       </section>
 
       {/* ---- FEATURED ---- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl font-semibold text-stone-900 mb-1">Featured Properties</h2>

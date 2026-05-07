@@ -7,18 +7,6 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import PropertyCard from '@/components/listings/PropertyCard';
 import { listings as listingsService } from '@/lib/services';
-import { cn } from '@/lib/utils';
-
-const CATEGORIES = [
-  { id: 'gardens', label: 'Gardens', icon: '🌿' },
-  { id: 'waterfronts', label: 'Waterfronts', icon: '🌊' },
-  { id: 'modern', label: 'Modern Homes', icon: '🏡' },
-  { id: 'historic', label: 'Historic Estates', icon: '🏛️' },
-  { id: 'courtyards', label: 'Courtyards', icon: '⛲' },
-  { id: 'lawns', label: 'Large Lawns', icon: '🌳' },
-  { id: 'meadows', label: 'Meadows', icon: '🌾' },
-  { id: 'terraces', label: 'Terraces', icon: '🏔️' },
-];
 
 export default function BrowseContent() {
   const searchParams = useSearchParams();
@@ -100,26 +88,6 @@ export default function BrowseContent() {
             </div>
           </div>
         )}
-
-        <div className="flex gap-2 overflow-x-auto pb-4 mb-4 scrollbar-hide">
-          <button
-            onClick={() => setCategory('all')}
-            className={cn('px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors',
-              category === 'all' ? 'bg-stone-900 text-white' : 'bg-stone-100 text-stone-600 hover:bg-stone-200')}
-          >
-            All Spaces
-          </button>
-          {CATEGORIES.map(cat => (
-            <button
-              key={cat.id}
-              onClick={() => setCategory(cat.id)}
-              className={cn('px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors flex items-center gap-1.5',
-                category === cat.id ? 'bg-stone-900 text-white' : 'bg-stone-100 text-stone-600 hover:bg-stone-200')}
-            >
-              <span>{cat.icon}</span> {cat.label}
-            </button>
-          ))}
-        </div>
 
         <p className="text-sm text-stone-500 mb-6">
           {loading ? 'Searching...' : `${results.length} spaces found`}
