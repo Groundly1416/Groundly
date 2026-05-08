@@ -38,7 +38,7 @@ export default async function HomePage() {
             Curated Outdoor Locations<br />For Creative Professionals
           </h1>
           <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">
-            Private gardens, estates, waterfront, and meadows.<br />Bookable by the hour, built for the creatives who shoot in them.
+            Private gardens, estates, waterfront, and meadows — bookable by the hour.
           </p>
           <HeroSearch />
         </div>
@@ -49,7 +49,7 @@ export default async function HomePage() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="text-2xl font-semibold text-stone-900 mb-1">Featured Properties</h2>
-            <p className="text-stone-500 text-sm">Hand-picked outdoor spaces. Curated for the creatives who shoot in them.</p>
+            <p className="text-stone-500 text-sm">Hand-picked outdoor spaces.</p>
           </div>
           <Link href="/browse" className="flex items-center gap-1 text-sm text-stone-500 hover:text-stone-900 transition-colors">
             View All <ChevronRight className="w-4 h-4" />
