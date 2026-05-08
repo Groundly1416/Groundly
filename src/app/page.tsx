@@ -38,7 +38,7 @@ export default async function HomePage() {
             Curated Outdoor Locations<br />For Creative Professionals
           </h1>
           <p className="text-white/70 text-lg mb-10 max-w-xl mx-auto">
-            Private gardens, estates, waterfront, and meadows — for photoshoots, weddings, and productions.
+            Private gardens, estates, waterfront, and meadows<br />— for photoshoots, weddings, and productions.
           </p>
           <HeroSearch />
         </div>
