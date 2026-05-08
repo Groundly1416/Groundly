@@ -143,7 +143,9 @@ export default async function ListingPage({ params }: { params: { id: string } }
             <BookingCard
               listingId={listing.id}
               listingTitle={listing.title}
-              pricePerHour={listing.price_2hr || listing.price_per_hour || 75}
+              price2hrCents={listing.price_2hr}
+              priceHalfdayCents={listing.price_halfday}
+              priceFulldayCents={listing.price_fullday}
               hostId={listing.host_id}
             />
           </div>

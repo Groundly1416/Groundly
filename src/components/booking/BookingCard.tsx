@@ -5,23 +5,44 @@ import { useState } from 'react';
 interface BookingCardProps {
   listingId: string;
   listingTitle: string;
-  pricePerHour: number; // This comes in as cents from the database
+  price2hrCents: number | null | undefined;
+  priceHalfdayCents?: number | null;
+  priceFulldayCents?: number | null;
   hostId?: string;
 }
 
-export default function BookingCard({ listingId, listingTitle, pricePerHour, hostId }: BookingCardProps) {
+type DurationOption = {
+  hours: 2 | 4 | 8;
+  label: string;
+  totalCents: number;
+};
+
+export default function BookingCard({
+  listingId,
+  listingTitle,
+  price2hrCents,
+  priceHalfdayCents,
+  priceFulldayCents,
+  hostId,
+}: BookingCardProps) {
+  const options: DurationOption[] = [];
+  if (price2hrCents) options.push({ hours: 2, label: '2 hours', totalCents: price2hrCents });
+  if (priceHalfdayCents) options.push({ hours: 4, label: '4 hours', totalCents: priceHalfdayCents });
+  if (priceFulldayCents) options.push({ hours: 8, label: '8 hours (full day)', totalCents: priceFulldayCents });
+
   const [date, setDate] = useState('');
-  const [hours, setHours] = useState(2);
+  const [hours, setHours] = useState<2 | 4 | 8>(2);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Convert cents to dollars for display
-  const priceInDollars = pricePerHour / 100;
-  const subtotal = priceInDollars * hours;
-  const serviceFee = Math.round(subtotal * 0.12 * 100) / 100;
-  const grandTotal = subtotal + serviceFee;
+  const selectedOption = options.find(o => o.hours === hours) ?? options[0];
+  const tierTotalCents = selectedOption?.totalCents ?? 0;
+  const serviceFeeCents = Math.round(tierTotalCents * 0.12);
+  const grandTotalCents = tierTotalCents + serviceFeeCents;
 
-  // Set minimum date to tomorrow
+  // price_2hr is the 2-hour tier total; the per-hour rate is half of it.
+  const hourlyRateDollars = price2hrCents ? price2hrCents / 200 : 0;
+
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const minDate = tomorrow.toISOString().split('T')[0];
@@ -29,6 +50,10 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
   const handleBooking = async () => {
     if (!date) {
       setError('Please select a date');
+      return;
+    }
+    if (!selectedOption) {
+      setError('No pricing available for this listing');
       return;
     }
 
@@ -42,7 +67,7 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
         body: JSON.stringify({
           listingId,
           listingTitle,
-          totalAmount: grandTotal,
+          totalAmount: grandTotalCents / 100,
           hours,
           date,
           hostId: hostId || '',
@@ -63,14 +88,21 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
     }
   };
 
+  if (options.length === 0) {
+    return (
+      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sticky top-24">
+        <p className="text-sm text-gray-500">Pricing not available for this listing.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sticky top-24">
       <div className="flex items-baseline gap-1 mb-6">
-        <span className="text-2xl font-bold text-gray-900">${priceInDollars}</span>
+        <span className="text-2xl font-bold text-gray-900">${hourlyRateDollars}</span>
         <span className="text-gray-500">/ hour</span>
       </div>
 
-      {/* Date Picker */}
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
         <input
@@ -82,44 +114,40 @@ export default function BookingCard({ listingId, listingTitle, pricePerHour, hos
         />
       </div>
 
-      {/* Hours Selector */}
       <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-1">Hours</label>
+        <label className="block text-sm font-medium text-gray-700 mb-1">Duration</label>
         <select
           value={hours}
-          onChange={(e) => setHours(parseInt(e.target.value))}
+          onChange={(e) => setHours(parseInt(e.target.value) as 2 | 4 | 8)}
           className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
         >
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((h) => (
-            <option key={h} value={h}>
-              {h} hour{h > 1 ? 's' : ''}
+          {options.map((o) => (
+            <option key={o.hours} value={o.hours}>
+              {o.label}
             </option>
           ))}
         </select>
       </div>
 
-      {/* Price Breakdown */}
       <div className="border-t border-gray-200 pt-4 mb-4 space-y-2">
         <div className="flex justify-between text-gray-600">
-          <span>${priceInDollars} x {hours} hour{hours > 1 ? 's' : ''}</span>
-          <span>${subtotal.toFixed(2)}</span>
+          <span>{selectedOption!.label}</span>
+          <span>${(tierTotalCents / 100).toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-gray-600">
           <span>Service fee</span>
-          <span>${serviceFee.toFixed(2)}</span>
+          <span>${(serviceFeeCents / 100).toFixed(2)}</span>
         </div>
         <div className="flex justify-between font-bold text-gray-900 pt-2 border-t border-gray-200">
           <span>Total</span>
-          <span>${grandTotal.toFixed(2)}</span>
+          <span>${(grandTotalCents / 100).toFixed(2)}</span>
         </div>
       </div>
 
-      {/* Error Message */}
       {error && (
         <p className="text-red-600 text-sm mb-3">{error}</p>
       )}
 
-      {/* Book Button */}
       <button
         onClick={handleBooking}
         disabled={loading}
