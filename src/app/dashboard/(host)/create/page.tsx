@@ -142,7 +142,7 @@ export default function CreateListingPage() {
       </Link>
 
       <h1 className="text-2xl font-semibold text-stone-900 mb-1">Create New Listing</h1>
-      <p className="text-sm text-stone-500 mb-8">List your outdoor space for photographers and creatives to book.</p>
+      <p className="text-sm text-stone-500 mb-8">List your outdoor space for photographers, ad agencies, and creative teams to book.</p>
 
       {error && (
         <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-2.5 rounded-lg mb-6">{error}</div>

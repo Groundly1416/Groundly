@@ -14,7 +14,7 @@ export default function Footer() {
               <span className="text-xl font-semibold text-white">Groundly</span>
             </div>
             <p className="text-sm leading-relaxed">
-              Outdoor private spaces, curated for photographers and creative pros.
+              Outdoor private spaces, curated for photographers, ad agencies, and creative pros.
             </p>
           </div>
           <div>

@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Groundly — Book Private Outdoor Spaces for Creative Shoots',
-  description: 'Private gardens, estates, waterfront, and meadows. Bookable by the hour, built for photographers.',
+  description: 'Private gardens, estates, waterfront, and meadows. Bookable by the hour, built for creative professionals — photographers, ad agencies, and production teams.',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

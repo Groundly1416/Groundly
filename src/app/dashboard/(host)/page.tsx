@@ -137,7 +137,7 @@ export default function DashboardPage() {
           </div>
           <h2 className="text-lg font-semibold text-stone-900 mb-2">No listings yet</h2>
           <p className="text-sm text-stone-500 mb-6 max-w-md mx-auto">
-            Start earning by listing your outdoor space on Groundly. Gardens, estates, courtyards — if it&apos;s beautiful, photographers want it.
+            Start earning by listing your outdoor space on Groundly. Gardens, estates, courtyards — if it&apos;s beautiful, creative professionals want it.
           </p>
           <Link
             href="/dashboard/create"

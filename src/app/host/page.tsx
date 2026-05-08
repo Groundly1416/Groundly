@@ -14,7 +14,7 @@ export default function HostPage() {
         </div>
         <div className="relative z-10 max-w-2xl mx-auto px-4 text-center">
           <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-4 leading-tight">Your outdoor space<br />deserves to be shared</h1>
-          <p className="text-white/70 text-lg mb-8">Earn money by listing your garden, lawn, or estate on Groundly.<br />Photographers book private outdoor spaces by the hour — yours could be next.</p>
+          <p className="text-white/70 text-lg mb-8">Earn money by listing your garden, lawn, or estate on Groundly.<br />Creative professionals book private outdoor spaces by the hour — yours could be next.</p>
           <a href="mailto:bookgroundly@gmail.com?subject=I%20want%20to%20list%20my%20space%20on%20Groundly" className="inline-flex items-center gap-2 bg-white text-stone-900 hover:bg-stone-100 px-8 py-4 rounded-lg font-medium transition-colors text-base">
             Start Hosting <ArrowRight className="w-4 h-4" />
           </a>
@@ -27,7 +27,7 @@ export default function HostPage() {
           {[
             { icon: DollarSign, title: 'Earn on your terms', desc: 'Set your own pricing, availability, and rules. You approve every booking before it happens.' },
             { icon: Shield, title: 'Safe & controlled', desc: 'Outdoor only — no events, no parties, no overnight stays. Full control over who books and when.' },
-            { icon: Camera, title: 'Curated community', desc: 'Every guest is a professional photographer or creative pro. They bring everything they need, treat your space with care, and leave it exactly how they found it.' },
+            { icon: Camera, title: 'Curated community', desc: 'Every guest is a creative professional — photographers, ad agencies, and production teams. They bring everything they need, treat your space with care, and leave it exactly how they found it.' },
           ].map(item => (
             <div key={item.title} className="text-center">
               <item.icon className="w-8 h-8 mx-auto mb-3 text-stone-700" />
@@ -43,9 +43,9 @@ export default function HostPage() {
           <h2 className="text-2xl font-semibold text-stone-900 text-center mb-10">How it works</h2>
           <div className="grid sm:grid-cols-3 gap-8">
             {[
-              { step: '1', title: 'Tell us about your space', desc: 'Send us photos and details about your outdoor space — gardens, lawns, estates, waterfronts, and courtyards. We\'re looking for spaces that photographers will fall in love with.' },
+              { step: '1', title: 'Tell us about your space', desc: 'Send us photos and details about your outdoor space — gardens, lawns, estates, waterfronts, and courtyards. We\'re looking for spaces that creative professionals will fall in love with.' },
               { step: '2', title: 'We build your listing', desc: 'Our team creates a polished listing with your photos, description, pricing, and rules. You review and approve before it goes live.' },
-              { step: '3', title: 'Start earning', desc: 'Receive booking requests from professional photographers shooting weddings, portraits, brand work, and more. You approve every booking and get paid through our secure platform 24 hours after each shoot.' },
+              { step: '3', title: 'Start earning', desc: 'Receive booking requests from photographers, ad agencies, and production teams shooting weddings, portraits, brand work, and more. You approve every booking and get paid through our secure platform 24 hours after each shoot.' },
             ].map(item => (
               <div key={item.step} className="text-center">
                 <div className="w-10 h-10 rounded-full bg-stone-900 text-white flex items-center justify-center mx-auto mb-3 text-sm font-semibold">{item.step}</div>
