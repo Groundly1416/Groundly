@@ -95,8 +95,8 @@ const FAQS = [
     a: 'No. Groundly is a marketplace that connects property owners with guests. Groundly does not provide insurance coverage for hosts, guests, or any activities that take place on a host\'s property. Hosts and guests are responsible for maintaining their own coverage. We recommend Thimble (thimble.com) and Markel (markel.com) for affordable per-booking event insurance.',
   },
   {
-    q: 'What is the vendor directory?',
-    a: 'Groundly features a curated directory of local creative professionals — photographers, videographers, stylists, hair and makeup artists, and other vendors who support outdoor productions. Vendors can be featured for free, and guests booking outdoor spaces can discover and connect with them directly.',
+    q: 'What is the Creative Network?',
+    a: 'The Creative Network is a free community for local creative professionals — photographers, videographers, stylists, hair and makeup artists, producers, set designers, and other professionals working in the production space. Members create a free profile to showcase their work, build visibility, and connect with other creatives who might bring them onto a shoot. It is a discovery and networking surface for the creative community, not a transactional vendor directory.',
   },
 ];
 
