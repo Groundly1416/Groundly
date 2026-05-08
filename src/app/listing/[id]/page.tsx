@@ -77,10 +77,12 @@ export default async function ListingPage({ params }: { params: { id: string } }
                   <MapPin className="w-4 h-4" />
                   {listing.city}, {listing.state}
                 </span>
-                <span className="flex items-center gap-1">
-                  <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  {listing.rating || '4.9'} ({listing.review_count || '12'} reviews)
-                </span>
+                {listing.review_count > 0 && (
+                  <span className="flex items-center gap-1">
+                    <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                    {listing.rating_avg} ({listing.review_count} review{listing.review_count !== 1 ? 's' : ''})
+                  </span>
+                )}
                 <span className="flex items-center gap-1">
                   <Users className="w-4 h-4" />
                   Up to {listing.max_guests} guests

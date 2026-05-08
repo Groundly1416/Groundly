@@ -113,7 +113,7 @@ export default function DashboardPage() {
                       )}
                       <span>{formatPrice(listing.price_2hr)} / 2hr</span>
                       <span>{listing.max_guests} guests max</span>
-                      {listing.rating_avg > 0 && (
+                      {listing.review_count > 0 && (
                         <span className="flex items-center gap-0.5">
                           <Star className="w-3 h-3 fill-stone-900 text-stone-900" />
                           {listing.rating_avg}
