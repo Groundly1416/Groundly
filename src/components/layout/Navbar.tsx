@@ -48,7 +48,7 @@ export default function Navbar() {
             <Link href="/browse" className="px-4 py-2 text-sm text-stone-500 hover:text-stone-900 rounded-lg transition-colors">
               Browse
             </Link>
-            <Link href="/vendors" className="px-4 py-2 text-sm text-stone-500 hover:text-stone-900 rounded-lg transition-colors">
+            <Link href="/creative-network" className="px-4 py-2 text-sm text-stone-500 hover:text-stone-900 rounded-lg transition-colors">
               Creative Network
             </Link>
             {isHost ? (
@@ -115,7 +115,7 @@ export default function Navbar() {
       {menuOpen && (
         <div className="md:hidden border-t border-stone-100 bg-white px-4 py-3 space-y-1">
           <Link href="/browse" className="block px-3 py-2 text-sm text-stone-600 rounded-lg hover:bg-stone-50" onClick={() => setMenuOpen(false)}>Browse Spaces</Link>
-          <Link href="/vendors" className="block px-3 py-2 text-sm text-stone-600 rounded-lg hover:bg-stone-50" onClick={() => setMenuOpen(false)}>Creative Network</Link>
+          <Link href="/creative-network" className="block px-3 py-2 text-sm text-stone-600 rounded-lg hover:bg-stone-50" onClick={() => setMenuOpen(false)}>Creative Network</Link>
           {isHost ? (
             <Link href="/dashboard" className="flex items-center gap-1.5 px-3 py-2 text-sm text-stone-600 rounded-lg hover:bg-stone-50" onClick={() => setMenuOpen(false)}>
               <LayoutDashboard className="w-3.5 h-3.5" />

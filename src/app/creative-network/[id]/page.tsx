@@ -21,7 +21,7 @@ export default async function VendorProfilePage({ params }: { params: { id: stri
         <main className="flex-1 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-2xl font-semibold text-stone-900 mb-2">Vendor not found</h1>
-            <Link href="/vendors" className="text-sm text-stone-500 hover:text-stone-900 underline">Back to vendors</Link>
+            <Link href="/creative-network" className="text-sm text-stone-500 hover:text-stone-900 underline">Back to vendors</Link>
           </div>
         </main>
         <Footer />
@@ -35,7 +35,7 @@ export default async function VendorProfilePage({ params }: { params: { id: stri
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-1 max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 w-full">
-        <Link href="/vendors" className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900 transition-colors mb-8">
+        <Link href="/creative-network" className="inline-flex items-center gap-1.5 text-sm text-stone-500 hover:text-stone-900 transition-colors mb-8">
           <ArrowLeft className="w-4 h-4" /> Back to vendors
         </Link>
 

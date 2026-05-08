@@ -83,7 +83,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 - **Click a listing** → full detail page with images, amenities, pricing, booking form
 - **Sign up** → `/signup` — creates a real account in Supabase Auth
 - **Sign in** → `/login` — authenticates against Supabase
-- **Vendors** → `/vendors` — curated vendor directory
+- **Creative Network** → `/creative-network` — curated directory of local creative pros
 - **Host landing** → `/host` — host onboarding pitch page
 - **About / FAQ / Trust** → static informational pages
 

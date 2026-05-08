@@ -42,7 +42,7 @@ export default async function VendorsPage() {
             {vendorList.map((v: any) => {
               const specialties = v.specialty ? v.specialty.split(',').map((s: string) => s.trim()).slice(0, 3) : [];
               return (
-                <Link href={'/vendors/' + v.id} key={v.id} className="bg-white rounded-xl border border-stone-100 hover:border-stone-200 hover:shadow-md transition-all p-6 flex flex-col">
+                <Link href={'/creative-network/' + v.id} key={v.id} className="bg-white rounded-xl border border-stone-100 hover:border-stone-200 hover:shadow-md transition-all p-6 flex flex-col">
                   <div className="flex items-center gap-4 mb-4">
                     <div className="w-14 h-14 rounded-xl flex items-center justify-center text-2xl shrink-0 overflow-hidden">
                       {v.image_url ? (
