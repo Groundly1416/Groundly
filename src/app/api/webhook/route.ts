@@ -13,20 +13,37 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'No signature' }, { status: 400 });
   }
 
-  let event: Stripe.Event;
+  // -----------------------------------------------------------------
+  // Two Stripe webhook destinations point at this endpoint:
+  //   - STRIPE_WEBHOOK_SECRET         platform events (checkout.session.completed, etc.)
+  //   - STRIPE_CONNECT_WEBHOOK_SECRET Connect events (account.updated, payout.*)
+  // Each is signed with its own secret, so we try the platform secret
+  // first and fall back to the Connect secret. If the Connect secret
+  // env var is not set, only the platform secret is checked.
+  // -----------------------------------------------------------------
+  const platformSecret = process.env.STRIPE_WEBHOOK_SECRET || '';
+  const connectSecret = process.env.STRIPE_CONNECT_WEBHOOK_SECRET;
 
+  let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET || ''
-    );
-  } catch (err: any) {
-    console.error('Webhook signature verification failed:', err.message);
-    return NextResponse.json(
-      { error: `Webhook Error: ${err.message}` },
-      { status: 400 }
-    );
+    event = stripe.webhooks.constructEvent(body, signature, platformSecret);
+  } catch (platformErr: any) {
+    if (!connectSecret) {
+      console.error('Webhook signature verification failed:', platformErr.message);
+      return NextResponse.json(
+        { error: `Webhook Error: ${platformErr.message}` },
+        { status: 400 }
+      );
+    }
+    try {
+      event = stripe.webhooks.constructEvent(body, signature, connectSecret);
+    } catch (connectErr: any) {
+      console.error('Webhook signature verification failed against both secrets:', connectErr.message);
+      return NextResponse.json(
+        { error: `Webhook Error: ${connectErr.message}` },
+        { status: 400 }
+      );
+    }
   }
 
   if (event.type === 'checkout.session.completed') {
