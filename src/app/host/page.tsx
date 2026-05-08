@@ -15,7 +15,7 @@ export default function HostPage() {
         <div className="relative z-10 max-w-2xl mx-auto px-4 text-center">
           <h1 className="text-4xl sm:text-5xl font-semibold text-white mb-4 leading-tight">Your outdoor space<br />deserves to be shared</h1>
           <p className="text-white/70 text-lg mb-8">Earn money by listing your garden, lawn, or estate on Groundly.<br />Creative professionals book private outdoor spaces for photoshoots and productions — yours could be next.</p>
-          <Link href="/signup" className="inline-flex items-center gap-2 bg-white text-stone-900 hover:bg-stone-100 px-8 py-4 rounded-lg font-medium transition-colors text-base">
+          <Link href="/signup?role=host" className="inline-flex items-center gap-2 bg-white text-stone-900 hover:bg-stone-100 px-8 py-4 rounded-lg font-medium transition-colors text-base">
             Start Hosting <ArrowRight className="w-4 h-4" />
           </Link>
         </div>
@@ -61,7 +61,7 @@ export default function HostPage() {
         <div className="max-w-3xl mx-auto px-4 text-center">
           <h2 className="text-2xl font-semibold text-stone-900 mb-4">Ready to list your space?</h2>
           <p className="text-stone-500 mb-8">It's free to list. Send us a few photos of your outdoor space and we'll build your listing for you.</p>
-          <Link href="/signup" className="inline-flex items-center gap-2 bg-stone-900 text-white px-8 py-3 rounded-lg font-medium hover:bg-stone-800 transition-colors">
+          <Link href="/signup?role=host" className="inline-flex items-center gap-2 bg-stone-900 text-white px-8 py-3 rounded-lg font-medium hover:bg-stone-800 transition-colors">
             Get Started <ArrowRight className="w-4 h-4" />
           </Link>
           <p className="text-stone-400 text-sm mt-4">Or email us directly at bookgroundly@gmail.com</p>

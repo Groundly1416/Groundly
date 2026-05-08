@@ -124,7 +124,7 @@ export default async function HomePage() {
                 ))}
               </div>
               <Link
-                href="/signup"
+                href="/signup?role=host"
                 className="inline-flex items-center gap-2 bg-white text-stone-900 hover:bg-stone-100 px-7 py-3 rounded-lg font-medium transition-colors w-fit"
               >
                 Start Hosting <ArrowRight className="w-4 h-4" />

@@ -1,14 +1,25 @@
 'use client';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Leaf } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import { auth } from '@/lib/services';
 import { cn } from '@/lib/utils';
 
 export default function SignupPage() {
-  const [role, setRole] = useState<'guest' | 'host'>('guest');
+  return (
+    <Suspense fallback={null}>
+      <SignupForm />
+    </Suspense>
+  );
+}
+
+function SignupForm() {
+  const searchParams = useSearchParams();
+  const initialRole: 'guest' | 'host' = searchParams.get('role') === 'host' ? 'host' : 'guest';
+  const [role, setRole] = useState<'guest' | 'host'>(initialRole);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

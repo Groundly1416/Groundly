@@ -62,7 +62,7 @@ export default function Navbar() {
                 My Bookings
               </Link>
             ) : (
-              <Link href="/signup" className="px-4 py-2 text-sm text-stone-500 hover:text-stone-900 rounded-lg transition-colors">
+              <Link href="/signup?role=host" className="px-4 py-2 text-sm text-stone-500 hover:text-stone-900 rounded-lg transition-colors">
                 List Your Space
               </Link>
             )}
@@ -127,7 +127,7 @@ export default function Navbar() {
               My Bookings
             </Link>
           ) : (
-            <Link href="/signup" className="block px-3 py-2 text-sm text-stone-600 rounded-lg hover:bg-stone-50" onClick={() => setMenuOpen(false)}>List Your Space</Link>
+            <Link href="/signup?role=host" className="block px-3 py-2 text-sm text-stone-600 rounded-lg hover:bg-stone-50" onClick={() => setMenuOpen(false)}>List Your Space</Link>
           )}
           <div className="border-t border-stone-100 pt-2 mt-2">
             {user ? (
