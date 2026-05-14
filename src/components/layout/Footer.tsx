@@ -1,7 +1,22 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Leaf } from 'lucide-react';
+import { auth } from '@/lib/services';
+import type { Profile } from '@/types/database';
 
 export default function Footer() {
+  const [user, setUser] = useState<Profile | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
+
+  useEffect(() => {
+    auth.getProfile()
+      .then(profile => setUser(profile))
+      .catch(() => {})
+      .finally(() => setAuthLoading(false));
+  }, []);
+
   return (
     <footer className="bg-stone-950 text-stone-400 mt-auto">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -27,7 +42,9 @@ export default function Footer() {
           <div>
             <h4 className="text-white font-medium text-sm mb-3">Hosting</h4>
             <div className="space-y-2">
-              <Link href="/signup?role=host" className="block text-sm hover:text-white transition-colors">List Your Space</Link>
+              {!authLoading && !user && (
+                <Link href="/signup?role=host" className="block text-sm hover:text-white transition-colors">List Your Space</Link>
+              )}
               <Link href="/hosting-insurance" className="block text-sm hover:text-white transition-colors">Hosting & Insurance</Link>
             </div>
           </div>
