@@ -4,6 +4,7 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import PropertyCard from '@/components/listings/PropertyCard';
 import HeroSearch from '@/components/layout/HeroSearch';
+import HideForHosts from '@/components/auth/HideForHosts';
 import { Camera, Calendar, Search, Shield, Lock, Users, Check, ArrowRight, ChevronRight, Star, MapPin } from 'lucide-react';
 
 export default async function HomePage() {
@@ -96,50 +97,52 @@ export default async function HomePage() {
       </section>
 
       {/* ---- HOST CTA ---- */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
-        <div className="bg-stone-900 rounded-3xl overflow-hidden">
-          <div className="grid md:grid-cols-2">
-            <div className="p-10 md:p-14 flex flex-col justify-center">
-              <p className="text-stone-400 text-sm tracking-widest uppercase mb-3">For Property Owners</p>
-              <h2 className="text-3xl font-semibold text-white mb-4 leading-tight">
-                Earn from your outdoor space
-              </h2>
-              <p className="text-stone-300 mb-6 leading-relaxed">
-                Your garden, lawn, or estate could be the perfect backdrop for someone's
-                next photoshoot. Photographers, ad agencies, and production teams bring
-                everything they need and treat your space like the professionals they are
-                — no setup, no cleanup, no events.
-              </p>
-              <div className="space-y-3 mb-8">
-                {[
-                  'You approve every booking before it confirms',
-                  'Outdoor only — no events, no overnight stays',
-                  'Set your own hourly rate and available hours',
-                  'We handle payments, communication, and logistics',
-                ].map(item => (
-                  <div key={item} className="flex items-center gap-3">
-                    <Check className="w-4 h-4 text-emerald-400 shrink-0" />
-                    <span className="text-stone-300 text-sm">{item}</span>
-                  </div>
-                ))}
+      <HideForHosts>
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="bg-stone-900 rounded-3xl overflow-hidden">
+            <div className="grid md:grid-cols-2">
+              <div className="p-10 md:p-14 flex flex-col justify-center">
+                <p className="text-stone-400 text-sm tracking-widest uppercase mb-3">For Property Owners</p>
+                <h2 className="text-3xl font-semibold text-white mb-4 leading-tight">
+                  Earn from your outdoor space
+                </h2>
+                <p className="text-stone-300 mb-6 leading-relaxed">
+                  Your garden, lawn, or estate could be the perfect backdrop for someone's
+                  next photoshoot. Photographers, ad agencies, and production teams bring
+                  everything they need and treat your space like the professionals they are
+                  — no setup, no cleanup, no events.
+                </p>
+                <div className="space-y-3 mb-8">
+                  {[
+                    'You approve every booking before it confirms',
+                    'Outdoor only — no events, no overnight stays',
+                    'Set your own hourly rate and available hours',
+                    'We handle payments, communication, and logistics',
+                  ].map(item => (
+                    <div key={item} className="flex items-center gap-3">
+                      <Check className="w-4 h-4 text-emerald-400 shrink-0" />
+                      <span className="text-stone-300 text-sm">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <Link
+                  href="/signup?role=host"
+                  className="inline-flex items-center gap-2 bg-white text-stone-900 hover:bg-stone-100 px-7 py-3 rounded-lg font-medium transition-colors w-fit"
+                >
+                  Start Hosting <ArrowRight className="w-4 h-4" />
+                </Link>
               </div>
-              <Link
-                href="/signup?role=host"
-                className="inline-flex items-center gap-2 bg-white text-stone-900 hover:bg-stone-100 px-7 py-3 rounded-lg font-medium transition-colors w-fit"
-              >
-                Start Hosting <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-            <div className="hidden md:block">
-              <img
-                src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80"
-                alt="Beautiful garden"
-                className="w-full h-full object-cover"
-              />
+              <div className="hidden md:block">
+                <img
+                  src="https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&q=80"
+                  alt="Beautiful garden"
+                  className="w-full h-full object-cover"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </HideForHosts>
 
       {/* ---- TRUST ---- */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">

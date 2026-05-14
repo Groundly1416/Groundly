@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import HideForHosts from '@/components/auth/HideForHosts';
 
 const QUESTIONS_TO_ASK = [
   'Does my homeowner\'s policy cover short-term commercial use of my outdoor space?',
@@ -117,28 +118,30 @@ export default function HostingInsurancePage() {
             </div>
           </section>
 
-          <section className="border-t border-stone-200 pt-10">
-            <h2 className="text-xl font-semibold text-stone-900 mb-3">Ready to list your space?</h2>
-            <p className="text-sm text-stone-600 leading-relaxed mb-5">
-              Join hosts across Connecticut, New York, and the Hamptons earning from professional photo and production bookings.
-            </p>
-            <Link
-              href="/host"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900 text-white text-sm font-medium rounded-lg hover:bg-stone-800 transition-colors"
-            >
-              Start listing
-            </Link>
-            <p className="text-xs text-stone-500 leading-relaxed mt-4">
-              Questions? Email{' '}
-              <a
-                href="mailto:bookgroundly@gmail.com"
-                className="underline underline-offset-2 hover:text-stone-700 transition-colors"
+          <HideForHosts>
+            <section className="border-t border-stone-200 pt-10">
+              <h2 className="text-xl font-semibold text-stone-900 mb-3">Ready to list your space?</h2>
+              <p className="text-sm text-stone-600 leading-relaxed mb-5">
+                Join hosts across Connecticut, New York, and the Hamptons earning from professional photo and production bookings.
+              </p>
+              <Link
+                href="/host"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-stone-900 text-white text-sm font-medium rounded-lg hover:bg-stone-800 transition-colors"
               >
-                bookgroundly@gmail.com
-              </a>
-              .
-            </p>
-          </section>
+                Start listing
+              </Link>
+              <p className="text-xs text-stone-500 leading-relaxed mt-4">
+                Questions? Email{' '}
+                <a
+                  href="mailto:bookgroundly@gmail.com"
+                  className="underline underline-offset-2 hover:text-stone-700 transition-colors"
+                >
+                  bookgroundly@gmail.com
+                </a>
+                .
+              </p>
+            </section>
+          </HideForHosts>
         </div>
       </main>
       <Footer />

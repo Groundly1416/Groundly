@@ -1,9 +1,26 @@
+'use client';
+
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { DollarSign, Shield, Camera, ArrowRight, Check } from 'lucide-react';
+import { auth } from '@/lib/services';
 
 export default function HostPage() {
+  const router = useRouter();
+
+  useEffect(() => {
+    auth.getProfile()
+      .then(profile => {
+        if (profile?.role === 'host' || profile?.role === 'admin') {
+          router.replace('/dashboard');
+        }
+      })
+      .catch(() => {});
+  }, [router]);
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
