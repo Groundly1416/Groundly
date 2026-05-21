@@ -59,23 +59,92 @@ export async function POST(request: NextRequest) {
           const { createClient } = await import('@supabase/supabase-js');
           const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
-          const { error } = await supabase.from('bookings').insert({
-            listing_id: metadata.listingId,
-            user_id: metadata.userId || null,
-            host_id: metadata.hostId || null,
-            booking_date: metadata.date,
-            hours: parseInt(metadata.hours || '1'),
-            total_amount: (session.amount_total || 0) / 100,
-            stripe_session_id: session.id,
-            stripe_payment_intent: session.payment_intent as string,
-            status: 'confirmed',
-            created_at: new Date().toISOString(),
-          });
+          const { data: insertedBooking, error: insertError } = await supabase
+            .from('bookings')
+            .insert({
+              listing_id: metadata.listingId,
+              user_id: metadata.userId || null,
+              host_id: metadata.hostId || null,
+              booking_date: metadata.date,
+              hours: parseInt(metadata.hours || '1'),
+              total_amount: (session.amount_total || 0) / 100,
+              stripe_session_id: session.id,
+              stripe_payment_intent: session.payment_intent as string,
+              status: 'confirmed',
+              created_at: new Date().toISOString(),
+            })
+            .select('id')
+            .single();
 
-          if (error) {
-            console.error('Error saving booking:', error);
+          let bookingId: string | null = insertedBooking?.id ?? null;
+
+          if (insertError) {
+            // Unique violation on stripe_session_id means this is a webhook
+            // retry — look up the existing booking so we can still wire up
+            // pending_transfers idempotently.
+            console.error('Error saving booking:', insertError);
+            const { data: existing } = await supabase
+              .from('bookings')
+              .select('id')
+              .eq('stripe_session_id', session.id)
+              .single();
+            bookingId = existing?.id ?? null;
           } else {
             console.log('Booking saved successfully for session:', session.id);
+          }
+
+          const requiredFields = [
+            'stripe_account_id',
+            'hostId',
+            'host_net_cents',
+            'platform_fee_cents',
+            'gross_amount_cents',
+            'event_date',
+          ] as const;
+          const missingField = requiredFields.find((k) => !metadata[k]);
+
+          if (missingField) {
+            console.warn(
+              `Skipping pending_transfers insert for session ${session.id}: missing metadata field ${missingField} (likely a legacy booking from before PR 2)`
+            );
+          } else {
+            const { data: existingTransfer } = await supabase
+              .from('pending_transfers')
+              .select('id')
+              .eq('stripe_checkout_session_id', session.id)
+              .maybeSingle();
+
+            if (existingTransfer) {
+              console.log(
+                'pending_transfers row already exists for session, skipping:',
+                session.id
+              );
+            } else {
+              const eventDate = new Date(metadata.event_date);
+              const releaseAt = new Date(eventDate.getTime() + 24 * 60 * 60 * 1000);
+
+              const { error: transferError } = await supabase
+                .from('pending_transfers')
+                .insert({
+                  booking_id: bookingId,
+                  stripe_payment_intent_id: session.payment_intent as string,
+                  stripe_checkout_session_id: session.id,
+                  stripe_account_id: metadata.stripe_account_id,
+                  host_user_id: metadata.hostId,
+                  amount_cents: parseInt(metadata.host_net_cents),
+                  platform_fee_cents: parseInt(metadata.platform_fee_cents),
+                  gross_amount_cents: parseInt(metadata.gross_amount_cents),
+                  event_date: eventDate.toISOString(),
+                  release_at: releaseAt.toISOString(),
+                  status: 'pending',
+                });
+
+              if (transferError) {
+                console.error('Error saving pending_transfer:', transferError);
+              } else {
+                console.log('pending_transfer recorded for session:', session.id);
+              }
+            }
           }
         } else {
           console.log('Supabase service key not configured, skipping DB save');

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { calculateFeeSplit } from '@/lib/fees';
 
 interface BookingCardProps {
   listingId: string;
@@ -37,8 +38,8 @@ export default function BookingCard({
 
   const selectedOption = options.find(o => o.hours === hours) ?? options[0];
   const tierTotalCents = selectedOption?.totalCents ?? 0;
-  const serviceFeeCents = Math.round(tierTotalCents * 0.12);
-  const grandTotalCents = tierTotalCents + serviceFeeCents;
+  const { platformFeeCents: serviceFeeCents, grossCents: grandTotalCents } =
+    calculateFeeSplit(tierTotalCents);
 
   // price_2hr is the 2-hour tier total; the per-hour rate is half of it.
   const hourlyRateDollars = price2hrCents ? price2hrCents / 200 : 0;
@@ -67,7 +68,7 @@ export default function BookingCard({
         body: JSON.stringify({
           listingId,
           listingTitle,
-          totalAmount: grandTotalCents / 100,
+          hostRateCents: tierTotalCents,
           hours,
           date,
           hostId: hostId || '',
