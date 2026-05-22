@@ -3,6 +3,10 @@
     {
       "path": "/api/cron/payout-pending-transfers",
       "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/cron/advance-rolling-availability",
+      "schedule": "0 5 * * *"
     }
   ]
 }

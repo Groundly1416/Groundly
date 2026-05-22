@@ -8,6 +8,7 @@ import { auth, listings as listingService, storage } from '@/lib/services';
 import { supabase } from '@/lib/supabase';
 import { toCents, formatPrice, cn } from '@/lib/utils';
 import type { Profile, Listing, Category, Amenity, ListingImage } from '@/types/database';
+import RollingAvailabilityField from '@/components/host/RollingAvailabilityField';
 
 const FALLBACK_CATEGORIES = [
   'Gardens', 'Waterfronts', 'Modern Homes', 'Historic Estates',
@@ -45,6 +46,7 @@ export default function EditListingPage() {
   const [maxGuests, setMaxGuests] = useState('');
   const [rules, setRules] = useState('');
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [rollingAvailabilityDays, setRollingAvailabilityDays] = useState<number | null>(null);
   const [newPhotos, setNewPhotos] = useState<File[]>([]);
   const [newPhotoPreviewUrls, setNewPhotoPreviewUrls] = useState<string[]>([]);
 
@@ -83,6 +85,7 @@ export default function EditListingPage() {
         setCategoryId(listingData.category_id || '');
         setPricePerHour(String(Math.round(listingData.price_2hr / 200)));
         setMaxGuests(String(listingData.max_guests));
+        setRollingAvailabilityDays(listingData.rolling_availability_days ?? null);
         setSelectedAmenities(existingAmenityIds);
         setRules(existingRules.map((r: any) => r.rule_text).join('\n'));
       } catch (err) {
@@ -138,6 +141,7 @@ export default function EditListingPage() {
         price_halfday: hourlyPriceCents * 4,
         price_fullday: hourlyPriceCents * 8,
         max_guests: parseInt(maxGuests) || 10,
+        rolling_availability_days: rollingAvailabilityDays,
       });
 
       // Upload new photos
@@ -243,6 +247,17 @@ export default function EditListingPage() {
                 className="input-field" />
             </Field>
           </div>
+        </Section>
+
+        {/* Booking Window */}
+        <Section title="How far in advance can guests book?">
+          <RollingAvailabilityField
+            value={rollingAvailabilityDays}
+            onChange={setRollingAvailabilityDays}
+          />
+          <p className="text-xs text-stone-400">
+            You can still block specific dates separately, no matter which option you pick.
+          </p>
         </Section>
 
         {/* Photos */}

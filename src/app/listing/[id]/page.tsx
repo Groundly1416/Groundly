@@ -149,6 +149,7 @@ export default async function ListingPage({ params }: { params: { id: string } }
               priceHalfdayCents={listing.price_halfday}
               priceFulldayCents={listing.price_fullday}
               hostId={listing.host_id}
+              rollingAvailabilityDays={listing.rolling_availability_days ?? null}
             />
           </div>
         </div>

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { calculateFeeSplit } from '@/lib/fees';
+import { getAvailableDateRange } from '@/lib/availability';
 
 interface BookingCardProps {
   listingId: string;
@@ -10,6 +11,7 @@ interface BookingCardProps {
   priceHalfdayCents?: number | null;
   priceFulldayCents?: number | null;
   hostId?: string;
+  rollingAvailabilityDays?: number | null;
 }
 
 type DurationOption = {
@@ -25,6 +27,7 @@ export default function BookingCard({
   priceHalfdayCents,
   priceFulldayCents,
   hostId,
+  rollingAvailabilityDays = null,
 }: BookingCardProps) {
   const options: DurationOption[] = [];
   if (price2hrCents) options.push({ hours: 2, label: '2 hours', totalCents: price2hrCents });
@@ -44,9 +47,11 @@ export default function BookingCard({
   // price_2hr is the 2-hour tier total; the per-hour rate is half of it.
   const hourlyRateDollars = price2hrCents ? price2hrCents / 200 : 0;
 
-  const tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  const minDate = tomorrow.toISOString().split('T')[0];
+  const { start, end } = getAvailableDateRange({
+    rolling_availability_days: rollingAvailabilityDays,
+  });
+  const minDate = start.toISOString().split('T')[0];
+  const maxDate = end ? end.toISOString().split('T')[0] : undefined;
 
   const handleBooking = async () => {
     if (!date) {
@@ -111,6 +116,7 @@ export default function BookingCard({
           value={date}
           onChange={(e) => setDate(e.target.value)}
           min={minDate}
+          max={maxDate}
           className="w-full border border-gray-300 rounded-lg px-4 py-3 text-gray-900 focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none"
         />
       </div>

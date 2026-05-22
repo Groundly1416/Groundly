@@ -7,6 +7,7 @@ import { ArrowLeft, Upload, X, Loader2, ImagePlus } from 'lucide-react';
 import { auth, listings as listingService, storage } from '@/lib/services';
 import { toCents, cn } from '@/lib/utils';
 import type { Profile, Category, Amenity } from '@/types/database';
+import RollingAvailabilityField from '@/components/host/RollingAvailabilityField';
 
 const FALLBACK_CATEGORIES = [
   'Gardens', 'Waterfronts', 'Modern Homes', 'Historic Estates',
@@ -38,6 +39,7 @@ export default function CreateListingPage() {
   const [maxGuests, setMaxGuests] = useState('');
   const [rules, setRules] = useState('');
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([]);
+  const [rollingAvailabilityDays, setRollingAvailabilityDays] = useState<number | null>(null);
   const [photos, setPhotos] = useState<File[]>([]);
   const [photoPreviewUrls, setPhotoPreviewUrls] = useState<string[]>([]);
 
@@ -93,6 +95,7 @@ export default function CreateListingPage() {
         price_halfday: hourlyPriceCents * 4,
         price_fullday: hourlyPriceCents * 8,
         max_guests: parseInt(maxGuests) || 10,
+        rolling_availability_days: rollingAvailabilityDays,
         status: 'under_review',
         is_featured: false,
         is_instant_inquiry: false,
@@ -210,6 +213,17 @@ export default function CreateListingPage() {
             </Field>
           </div>
           <p className="text-xs text-stone-400">Half-day and full-day rates are calculated automatically from your hourly rate.</p>
+        </Section>
+
+        {/* Booking Window */}
+        <Section title="How far in advance can guests book?">
+          <RollingAvailabilityField
+            value={rollingAvailabilityDays}
+            onChange={setRollingAvailabilityDays}
+          />
+          <p className="text-xs text-stone-400">
+            You can still block specific dates separately, no matter which option you pick.
+          </p>
         </Section>
 
         {/* Photos */}

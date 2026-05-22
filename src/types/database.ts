@@ -66,6 +66,7 @@ export interface Listing {
   status: ListingStatus;
   is_featured: boolean;
   is_instant_inquiry: boolean;
+  rolling_availability_days: number | null;
   admin_notes: string | null;
   rating_avg: number;
   review_count: number;
