@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { LayoutDashboard, Plus, Calendar, ArrowLeft, Banknote } from 'lucide-react';
+import { LayoutDashboard, Plus, Calendar, ArrowLeft, Banknote, Wallet } from 'lucide-react';
 import { auth } from '@/lib/services';
 import { cn } from '@/lib/utils';
 import type { Profile } from '@/types/database';
@@ -14,6 +14,7 @@ const sidebarLinks = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { href: '/dashboard/create', label: 'Create Listing', icon: Plus },
   { href: '/dashboard/bookings', label: 'Bookings', icon: Calendar },
+  { href: '/dashboard/earnings', label: 'Earnings', icon: Wallet },
   { href: '/dashboard/payouts', label: 'Payouts', icon: Banknote },
 ];
 
