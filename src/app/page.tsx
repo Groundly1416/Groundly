@@ -7,6 +7,8 @@ import HeroSearch from '@/components/layout/HeroSearch';
 import HideForHosts from '@/components/auth/HideForHosts';
 import { Camera, Calendar, Search, Shield, Lock, Users, Check, ArrowRight, ChevronRight, Star, MapPin } from 'lucide-react';
 
+export const revalidate = 60;
+
 export default async function HomePage() {
   // Fetch featured listings from Supabase
   // If Supabase isn't connected yet, this gracefully returns []
