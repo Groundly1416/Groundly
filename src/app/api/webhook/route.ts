@@ -155,6 +155,20 @@ export async function POST(request: NextRequest) {
     }
   }
 
+  if (event.type === 'charge.refunded') {
+    // Audit/observability only — the cancel API route already wrote
+    // refund_amount_cents + stripe_refund_id to the booking row
+    // synchronously. This event is the after-the-fact Stripe confirmation;
+    // we log it so we can reconcile if a refund ever shows up here without
+    // a matching DB write (which would indicate the cancel route failed
+    // mid-flight or the refund was issued directly from the Stripe
+    // Dashboard).
+    const charge = event.data.object as Stripe.Charge;
+    console.log(
+      `[webhook] charge.refunded: charge=${charge.id} payment_intent=${charge.payment_intent} amount_refunded=${charge.amount_refunded}`,
+    );
+  }
+
   if (event.type === 'account.updated') {
     const account = event.data.object as Stripe.Account;
     try {
